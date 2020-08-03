@@ -6,7 +6,9 @@ class Item {
 }
 
 class Menu {
+  final String menuId;
   List<Item> items;
 
-  Menu({this.items});
+
+  Menu({this.menuId, this.items});
 }
