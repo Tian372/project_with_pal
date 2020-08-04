@@ -58,7 +58,9 @@ class _SignInState extends State<SignIn> {
 //        }
 //      });
 //    }
-    provider.login();
+    if(formKey.currentState.validate()){
+      provider.login();
+    }
   }
 
   @override
@@ -86,38 +88,11 @@ class _SignInState extends State<SignIn> {
                     key: formKey,
                     child: Column(
                       children: [
-                        SizedBox(
-                          height: 50,
-                          child: TextFormField(
-                            controller: emailEditingController,
-                            validator: (val) {
-                              return RegExp(
-                                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                      .hasMatch(val)
-                                  ? null
-                                  : "Enter correct email";
-                            },
-                            decoration: InputDecoration(
-                                border: InputBorder.none, hintText: 'Email'),
-                          ),
-                        ),
+                        SizedBox(height: 50, child: emailInput()),
                         SizedBox(
                           height: 20,
                         ),
-                        SizedBox(
-                          height: 50,
-                          child: TextFormField(
-                            validator: (val) {
-                              return val.length < 6
-                                  ? "Enter Password 6+ characters"
-                                  : null;
-                            },
-                            controller: passwordEditingController,
-//                          validator: ,
-                            decoration: InputDecoration(
-                                border: InputBorder.none, hintText: 'Email'),
-                          ),
-                        ),
+                        SizedBox(height: 50, child: passwordInput()),
                       ],
                     ),
                   ),
@@ -143,23 +118,14 @@ class _SignInState extends State<SignIn> {
                   Spacer(
                     flex: 1,
                   ),
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.blueAccent, width: 1.0),
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    width: MediaQuery.of(context).size.width,
-                    child: RaisedButton(
-                      onPressed: () {
-                        userLogin.login();
-                      },
-                      child: Text(
-                        "Sign In",
-                        style:
-                            TextStyle(color: Colors.blueAccent, fontSize: 17),
-                        textAlign: TextAlign.center,
-                      ),
+                  RaisedButton(
+                    onPressed: () {
+                      signIn(userLogin);
+                    },
+                    child: Text(
+                      "Sign In",
+                      style: TextStyle(color: Colors.blueAccent, fontSize: 17),
+                      textAlign: TextAlign.center,
                     ),
                   ),
                   SizedBox(
@@ -194,4 +160,33 @@ class _SignInState extends State<SignIn> {
     );
   }
 
+  Widget emailInput() {
+    return TextFormField(
+      controller: emailEditingController,
+      validator: (val) {
+        return RegExp(
+                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                .hasMatch(val)
+            ? null
+            : "Enter correct email";
+      },
+      decoration: InputDecoration(
+          border:
+              OutlineInputBorder(borderRadius: new BorderRadius.circular(10.0)),
+          labelText: 'Email'),
+    );
+  }
+
+  Widget passwordInput() {
+    return TextFormField(
+      validator: (val) {
+        return val.length < 6 ? "Enter Password 6+ characters" : null;
+      },
+      controller: passwordEditingController,
+      decoration: InputDecoration(
+          border:
+              OutlineInputBorder(borderRadius: new BorderRadius.circular(10.0)),
+          labelText: 'Password'),
+    );
+  }
 }
