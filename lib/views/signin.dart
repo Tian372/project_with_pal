@@ -163,13 +163,13 @@ class _SignInState extends State<SignIn> {
   Widget emailInput() {
     return TextFormField(
       controller: emailEditingController,
-      validator: (val) {
-        return RegExp(
-                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                .hasMatch(val)
-            ? null
-            : "Enter correct email";
-      },
+//      validator: (val) {
+//        return RegExp(
+//                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+//                .hasMatch(val)
+//            ? null
+//            : "Enter correct email";
+//      },
       decoration: InputDecoration(
           border:
               OutlineInputBorder(borderRadius: new BorderRadius.circular(10.0)),
@@ -179,9 +179,9 @@ class _SignInState extends State<SignIn> {
 
   Widget passwordInput() {
     return TextFormField(
-      validator: (val) {
-        return val.length < 6 ? "Enter Password 6+ characters" : null;
-      },
+//      validator: (val) {
+//        return val.length < 6 ? "Enter Password 6+ characters" : null;
+//      },
       controller: passwordEditingController,
       decoration: InputDecoration(
           border:

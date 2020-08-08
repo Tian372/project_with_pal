@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lilivery/providers/userLogin.dart';
 import 'package:lilivery/views/authView.dart';
+import 'package:lilivery/views/orderView.dart';
+import 'package:lilivery/views/restaurantView.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -37,6 +39,12 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
+  int _currentIndex = 0;
+  List<Widget> _children = [
+    RestaurantView(),
+    OrderView(),
+    Center(child: Text('User'),)
+  ];
   @override
   void initState() {
     super.initState();
@@ -54,12 +62,38 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
     final userLoginProvider = Provider.of<UserLogin>(context);
     return !userLoginProvider.loginStatus
         ? Authenticate()
-        : Scaffold(
-            appBar: AppBar(
-              title: Text(widget.title),
-            ),
-            body: Center(
-              child: Text('Main Page'),
-            ));
+        :navigation();
+  }
+
+  Widget navigation() {
+    void onTabTapped(int index) {
+      setState(() {
+        _currentIndex = index;
+      });
+    }
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('DukeEats'),
+      ),
+      body: _children[_currentIndex], // new
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: onTabTapped, // new
+        currentIndex: _currentIndex, // new
+        items: [
+          new BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            title: Text('Food'),
+          ),
+          new BottomNavigationBarItem(
+            icon: Icon(Icons.line_weight),
+            title: Text('History'),
+          ),
+          new BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              title: Text('Users')
+          )
+        ],
+      ),
+    );
   }
 }
