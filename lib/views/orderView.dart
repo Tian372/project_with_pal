@@ -16,14 +16,13 @@ class _OrderViewState extends State<OrderView> {
   @override
   Widget build(BuildContext context) {
     final userLogin = Provider.of<UserLogin>(context);
-    return Scaffold(body: Container(
-      child: orderHistory(),
+    return SafeArea(
+        child: Container(
+          child: orderHistory(),
     ));
-
   }
 
   Widget orderHistory() {
-
     Future<List<String>> myTypedFuture() async {
       await Future.delayed(Duration(seconds: 2));
       List<String> list = new List<String>();
@@ -38,24 +37,24 @@ class _OrderViewState extends State<OrderView> {
       builder: (context, snapshot) {
         return snapshot.hasData
             ? ListView.separated(
-            separatorBuilder: (context, index) => Divider(
-              color: Colors.black26,
-              thickness: 1,
-            ),
-            itemCount: snapshot.data.length,
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              return Container(
-                height: 100,
-                width: double.infinity,
-                child: Center(
-                  child: Text(snapshot.data[index]),
-                ),
-              );
-            })
+                separatorBuilder: (context, index) => Divider(
+                      color: Colors.black26,
+                      thickness: 1,
+                    ),
+                itemCount: snapshot.data.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return Container(
+                    height: 100,
+                    width: double.infinity,
+                    child: Center(
+                      child: Text(snapshot.data[index]),
+                    ),
+                  );
+                })
             : Center(
-          child: CircularProgressIndicator(),
-        );
+                child: CircularProgressIndicator(),
+              );
       },
     );
   }

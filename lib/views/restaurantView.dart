@@ -16,40 +16,56 @@ class _RestaurantViewState extends State<RestaurantView> {
   @override
   Widget build(BuildContext context) {
     final userLogin = Provider.of<UserLogin>(context);
-    return Scaffold(body: Container(
+    return SafeArea(
+        child: Container(
       child: restaurantsList(),
     ));
-
   }
 
   Widget restaurantsList() {
-
     Future<List<String>> myTypedFuture() async {
       await Future.delayed(Duration(seconds: 2));
-      List<String> list = new List<String>();
-      for (int i = 0; i < 10; i++) {
-        list.add('Restaurant ' + i.toString());
-      }
+      List<String> list =
+          new List<String>.generate(8, (index) => 'Task $index');
       return list;
     }
 
     return FutureBuilder(
       future: myTypedFuture(),
       builder: (context, snapshot) {
+        //TODO: fix dismissed
+        List<String> list = new List<String>();
+        if(snapshot.hasData){
+          list =  snapshot.data;
+        }
         return snapshot.hasData
             ? ListView.separated(
                 separatorBuilder: (context, index) => Divider(
                       color: Colors.black26,
                       thickness: 1,
                     ),
-                itemCount: snapshot.data.length,
+                itemCount: list.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  return Container(
-                    height: 100,
-                    width: double.infinity,
-                    child: Center(
-                      child: Text(snapshot.data[index]),
+                  return Dismissible(
+                    key: new Key(list[index]),
+                    background: new Container(
+                      color: Colors.red,
+                    ),
+                    onDismissed: (direction){
+                      Scaffold.of(context).showSnackBar(
+                        new SnackBar(content: new Text("Removed"))
+                      );
+                      list.remove(list[index]);
+                    },
+                    child: Container(
+                      height: 100,
+                      width: double.infinity,
+                      child: Center(
+                        child: ListTile(
+                          title: Text(list[index]),
+                        ),
+                      ),
                     ),
                   );
                 })

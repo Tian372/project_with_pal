@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:lilivery/providers/userLogin.dart';
 import 'package:lilivery/views/authView.dart';
+import 'package:lilivery/views/infoView.dart';
 import 'package:lilivery/views/orderView.dart';
+import 'package:lilivery/views/post.dart';
+import 'package:lilivery/views/postList.dart';
 import 'package:lilivery/views/restaurantView.dart';
 import 'package:provider/provider.dart';
 
@@ -42,9 +45,16 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
   int _currentIndex = 0;
   List<Widget> _children = [
     RestaurantView(),
-    OrderView(),
-    Center(child: Text('User'),)
+    PostList(),
+    InfoView(),
   ];
+  List<Widget> _title= [
+    Text('Tasks'),
+    Text('New Post'),
+    Text('Restaurant Info'),
+  ];
+
+
   @override
   void initState() {
     super.initState();
@@ -60,9 +70,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     final userLoginProvider = Provider.of<UserLogin>(context);
-    return !userLoginProvider.loginStatus
-        ? Authenticate()
-        :navigation();
+    return !userLoginProvider.loginStatus ? Authenticate() : navigation();
   }
 
   Widget navigation() {
@@ -71,9 +79,10 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
         _currentIndex = index;
       });
     }
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('DukeEats'),
+        title: _title[_currentIndex],
       ),
       body: _children[_currentIndex], // new
       bottomNavigationBar: BottomNavigationBar(
@@ -82,16 +91,14 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
         items: [
           new BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            title: Text('Food'),
+            title: Text('Ongoing'),
           ),
           new BottomNavigationBarItem(
             icon: Icon(Icons.line_weight),
-            title: Text('History'),
+            title: Text('Post'),
           ),
           new BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              title: Text('Users')
-          )
+              icon: Icon(Icons.person), title: Text('Sell'))
         ],
       ),
     );
